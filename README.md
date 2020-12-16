@@ -1,8 +1,6 @@
 # 基于网络嵌入和语义表征的作者名消歧
 
-Biendata竞赛平台 “OAG–WhoIsWho“赛道一 第一名解决方案
-队伍名：cnic  
-比赛数据链接：https://www.biendata.xyz/competition/aminer2019/
+贡献者：@joe817
 
 
 ## 摘要
