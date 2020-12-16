@@ -3,13 +3,14 @@ from gensim.models import word2vec
 from sklearn.cluster import DBSCAN
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
-
+from utils import *
+from tqdm import tqdm
 pubs_raw = load_json("sna_data","sna_valid_pub.json")
 name_pubs1 = load_json("sna_data","sna_valid_example_evaluation_scratch.json")
 
 result={}
 
-for n,name in enumerate(name_pubs1):
+for n,name in enumerate(tqdm(name_pubs1)):
     pubs=[]
     for cluster in name_pubs1[name]:
         pubs.extend(cluster)
