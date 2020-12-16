@@ -26,7 +26,7 @@ for n,name in enumerate(name_pubs):
             labels.append(ilabel)
         ilabel += 1
     # pubs存储了当前名字下所有的论文
-    # labels存储了pubs中论文对应作者的label
+    # labels存储了pubs中论文对应真实作者的label
     print (n,name,len(pubs))
     
     
@@ -147,11 +147,13 @@ for n,name in enumerate(name_pubs):
                     pre[j]=pre[i]
             
             
-    
+    # 真实标签
     labels = np.array(labels)
+    # 预测标签
     pre = np.array(pre)
     print (labels,len(set(labels)))
     print (pre,len(set(pre)))
+    # 计算p r f1值
     pairwise_precision, pairwise_recall, pairwise_f1 = pairwise_evaluate(labels,pre)
     print (pairwise_precision, pairwise_recall, pairwise_f1)
     result.append(pairwise_f1)
