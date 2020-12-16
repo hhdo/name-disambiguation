@@ -1,0 +1,9 @@
+sna_data/.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+.vscode/
+gene/
+genename/
+word2vec/
+sna_data/
+train/
