@@ -4,12 +4,12 @@ from sklearn.cluster import DBSCAN
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
 from utils import *
-
+from tqdm import tqdm
 pubs_raw = load_json("train","train_pub.json")
 name_pubs = load_json("train","train_author.json")
 
 result=[]
-for n,name in enumerate(name_pubs):
+for n,name in enumerate(tqdm(name_pubs)):
     ilabel=0
     pubs=[] # all papers
     labels=[] # ground truth

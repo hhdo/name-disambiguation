@@ -7,16 +7,22 @@ import pickle
 import os
 import re
 from utils import *
+from tqdm import tqdm
 
+# 增加了v1数据
+# pubs_raw = load_json("train","train_pub.json")
+# pubs_raw1 = load_json("sna_data","sna_valid_pub.json")
+# #pubs_raw2 = load_json("sna_test_data","test_pub_sna.json")
 
-pubs_raw = load_json("train","train_pub.json")
-pubs_raw1 = load_json("sna_data","sna_valid_pub.json")
-#pubs_raw2 = load_json("sna_test_data","test_pub_sna.json")
+pubs_raw = load_json("all_train_text","all_train_pub.json")
+pubs_raw1 = load_json("all_train_text","all_valid_pub.json")
+
 r = '[!“”"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~—～’]+'
 
 f1 = open ('gene/all_text.txt','w',encoding = 'utf-8')
 
-for i,pid in enumerate(pubs_raw):
+print('training train pub text:')
+for i,pid in enumerate(tqdm(pubs_raw)):
     pub = pubs_raw[pid]
     
     for author in pub["authors"]:
@@ -59,8 +65,9 @@ for i,pid in enumerate(pubs_raw):
     pstr = re.sub(r,' ', pstr)
     pstr = re.sub(r'\s{2,}', ' ', pstr).strip()
     f1.write(pstr+'\n')
-    
-for i,pid in enumerate(pubs_raw1):
+
+print('training valid pub text:')
+for i,pid in enumerate(tqdm(pubs_raw1)):
     pub = pubs_raw1[pid]
     
     for author in pub["authors"]:

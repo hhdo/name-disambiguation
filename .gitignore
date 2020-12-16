@@ -8,3 +8,5 @@ word2vec/
 sna_data/
 train/
 test.ipynb
+genetest/
+all_train_text/
