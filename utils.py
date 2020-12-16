@@ -91,10 +91,10 @@ class MetaPathGenerator:
                     self.conf_paper[a].append(p)
         temp.clear()
                     
-        print ("#papers ", len(self.paper_conf))      
-        print ("#authors", len(self.author_paper))
-        print ("#org_words", len(self.org_paper))
-        print ("#confs  ", len(self.conf_paper)) 
+        # print ("#papers ", len(self.paper_conf))      
+        # print ("#authors", len(self.author_paper))
+        # print ("#org_words", len(self.org_paper))
+        # print ("#confs  ", len(self.conf_paper)) 
     
     def generate_WMRW(self, outfilename, numwalks, walklength):
         outfile = open(outfilename, 'w')
@@ -159,7 +159,7 @@ class MetaPathGenerator:
                 outfile.write(outline + "\n")
         outfile.close()
         
-        print ("walks done")
+        # print ("walks done")
         
 ################# Compare Lists ################
 

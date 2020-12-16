@@ -16,7 +16,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
         pubs.extend(cluster)
     
     
-    print (n,name,len(pubs))
+    # print (n,name,len(pubs))
     if len(pubs)==0:
         result[name]=[]
         continue
@@ -60,7 +60,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
                 embs.append(np.zeros(100))
         all_embs.append(embs)
     all_embs= np.array(all_embs)
-    print ('relational outlier:',cp)
+    # print ('relational outlier:',cp)
     ############################################################### 
 
     
@@ -69,7 +69,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     ###############################################################   
     ptext_emb=load_data('gene','ptext_emb.pkl')
     tcp=load_data('gene','tcp.pkl')
-    print ('semantic outlier:',tcp)
+    # print ('semantic outlier:',tcp)
     tembs=[]
     for i,pid in enumerate(pubs):
         tembs.append(ptext_emb[pid])
@@ -133,7 +133,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
             
     
 
-    print (pre,len(set(pre)))
+    # print (pre,len(set(pre)))
     
     result[name]=[]
     for i in set(pre):
