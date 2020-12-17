@@ -10,6 +10,7 @@ name_pubs = load_json("train","train_author.json")
 
 result=[]
 for n,name in enumerate(tqdm(name_pubs)):
+    # 遍历每一个重名作者
     ilabel=0
     pubs=[] # all papers
     labels=[] # ground truth
