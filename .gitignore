@@ -10,3 +10,4 @@ train/
 test.ipynb
 genetest/
 all_train_text/
+scibert_pre_data/

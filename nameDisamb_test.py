@@ -3,7 +3,7 @@ from gensim.models import word2vec
 from sklearn.cluster import DBSCAN
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
-from utils import *
+from utils_w2w import *
 from tqdm import tqdm
 pubs_raw = load_json("sna_test_data","test_pub_sna.json")
 name_pubs1 = load_json("sna_test_data","example_evaluation_scratch.json")

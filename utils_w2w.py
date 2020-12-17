@@ -1,4 +1,4 @@
-# utils_v2 使用sci_bert模型直接生成每篇文章的embedding
+# utils_v1 使用word2vec预训练向量作为文本embedding
 import codecs
 import json
 from os.path import join
@@ -308,7 +308,7 @@ def save_relation(name_pubs_raw, name): # 保存论文的各种feature
     f3 = open ('gene/paper_word.txt','w',encoding = 'utf-8')
     f4 = open ('gene/paper_org.txt','w',encoding = 'utf-8')
 
-   
+
     
     taken = name.split("_")
     name = taken[0] + taken[1]
@@ -399,44 +399,36 @@ def save_relation(name_pubs_raw, name): # 保存论文的各种feature
         for word in pstr:
             f3.write(pid + '\t' + word + '\n')
         
+        #save all words' embedding
+        # pstr = [关键词 题目 地点 机构 年份]
+        pstr = keyword + " " + pub["title"] + " " + pub["venue"] + " " + org
+        if "year" in pub:
+              pstr = pstr +  " " + str(pub["year"])
+        pstr=pstr.strip()
+        pstr = pstr.lower()
+        pstr = re.sub(r,' ', pstr)
+        pstr = re.sub(r'\s{2,}', ' ', pstr).strip()
+        pstr = pstr.split(' ')
+        pstr = [word for word in pstr if len(word)>1]
+        pstr = [word for word in pstr if word not in stopword]
+        pstr = [word for word in pstr if word not in stopword1]
+        #print (pstr)
 
-
-        # 由于使用了sci-bert,这里的embedding删掉
-        # sci-bert直接生成了ptext_emb.pkl
-
-
-    #     #save all words' embedding
-    #     # pstr = [关键词 题目 地点 机构 年份]
-    #     pstr = keyword + " " + pub["title"] + " " + pub["venue"] + " " + org
-    #     if "year" in pub:
-    #           pstr = pstr +  " " + str(pub["year"])
-    #     pstr=pstr.strip()
-    #     pstr = pstr.lower()
-    #     pstr = re.sub(r,' ', pstr)
-    #     pstr = re.sub(r'\s{2,}', ' ', pstr).strip()
-    #     pstr = pstr.split(' ')
-    #     pstr = [word for word in pstr if len(word)>1]
-    #     pstr = [word for word in pstr if word not in stopword]
-    #     pstr = [word for word in pstr if word not in stopword1]
-    #     #print (pstr)
-
+        words_vec=[]
+        for word in pstr:
+            if (word in model_w):
+                words_vec.append(model_w[word])
+                # words_vec = [[word1],[word2],[word3],[word4],...]表示当前文章的embedding
+        if len(words_vec)<1:
+            words_vec.append(np.zeros(100))
+            tcp.add(i)
+            #print ('outlier:',pid,pstr)
+        ptext_emb[pid] = np.mean(words_vec,0)
         
-    #     words_vec=[]
-    #     for word in pstr:
-    #         if (word in model_w):
-    #             words_vec.append(model_w[word])
-    #             # words_vec = [[word1],[word2],[word3],[word4],...]表示当前文章的embedding
-    #     if len(words_vec)<1:
-    #         words_vec.append(np.zeros(100))
-    #         tcp.add(i)
-    #         #print ('outlier:',pid,pstr)
-    #     ptext_emb[pid] = np.mean(words_vec,0)
-        
-    # #  ptext_emb: key is paper id, and the value is the paper's text embedding
-    # dump_data(ptext_emb,'gene','ptext_emb.pkl')
-
-    # # the paper index that lack text information
-    # dump_data(tcp,'gene','tcp.pkl')
+    #  ptext_emb: key is paper id, and the value is the paper's text embedding
+    dump_data(ptext_emb,'gene','ptext_emb.pkl')
+    # the paper index that lack text information
+    dump_data(tcp,'gene','tcp.pkl')
             
  
     f1.close()

@@ -3,7 +3,7 @@ from gensim.models import word2vec
 from sklearn.cluster import DBSCAN
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
-from utils_w2w import *
+from utils import *
 from tqdm import tqdm
 pubs_raw = load_json("sna_data","sna_valid_pub.json")
 name_pubs1 = load_json("sna_data","sna_valid_example_evaluation_scratch.json")
@@ -67,12 +67,12 @@ for n,name in enumerate(tqdm(name_pubs1)):
     
     ##论文文本表征向量
     ###############################################################   
-    ptext_emb=load_data('gene','ptext_emb.pkl')
+    ptext_emb=load_data('gene/scibert','paper_embeddings_text1_last4321.pkl')
     tcp=load_data('gene','tcp.pkl')
     # print ('semantic outlier:',tcp)
     tembs=[]
     for i,pid in enumerate(pubs):
-        tembs.append(ptext_emb[pid])
+        tembs.append(ptext_emb[pid][768*2:768*3])
     ############################################################### 
     
     ##离散点
