@@ -3,12 +3,13 @@ from utils import *
 from tqdm import tqdm
 import re
 
-pubs_raw = load_json("train","train_pub.json")
+# pubs_raw = load_json("train","train_pub.json")
+pubs_raw = load_json("sna_data","sna_valid_pub.json")
 
 r = '[!“”"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~—～’]+'
 
 def version1():
-    text_path = 'scibert_pre_data/all_paper_text1.txt'
+    text_path = 'scibert_pre_data/all_paper_text3.txt'
     pubs_raw = load_json("train","train_pub.json")
     f = open (text_path,'w',encoding = 'utf-8')
     for pid in tqdm(pubs_raw):
@@ -34,7 +35,7 @@ def version1():
     f.close()
 
 def version2():
-    text_path = 'scibert_pre_data/all_paper_text2.txt'
+    text_path = 'scibert_pre_data/all_paper_text4.txt'
     pubs_raw = load_json("train","train_pub.json")
     f = open (text_path,'w',encoding = 'utf-8')
     for pid in tqdm(pubs_raw):
