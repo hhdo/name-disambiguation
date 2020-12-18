@@ -10,7 +10,7 @@ r = '[!“”"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~—～’]+'
 
 def version1():
     text_path = 'scibert_pre_data/all_paper_text3.txt'
-    pubs_raw = load_json("train","train_pub.json")
+    
     f = open (text_path,'w',encoding = 'utf-8')
     for pid in tqdm(pubs_raw):
         thisPaper = pubs_raw[pid]
@@ -36,7 +36,7 @@ def version1():
 
 def version2():
     text_path = 'scibert_pre_data/all_paper_text4.txt'
-    pubs_raw = load_json("train","train_pub.json")
+    
     f = open (text_path,'w',encoding = 'utf-8')
     for pid in tqdm(pubs_raw):
         thisPaper = pubs_raw[pid]
@@ -62,5 +62,5 @@ def version2():
 
 
 version1()
-version2()
+# version2()
 

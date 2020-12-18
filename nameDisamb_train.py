@@ -28,7 +28,7 @@ for n,name in enumerate(tqdm(name_pubs)):
         ilabel += 1
     # pubs存储了当前名字下所有的论文
     # labels存储了pubs中论文对应真实作者的label
-    print (n,name,len(pubs))
+    # print (n,name,len(pubs))
     
     
     if len(pubs)==0:
@@ -74,7 +74,7 @@ for n,name in enumerate(tqdm(name_pubs)):
                 embs.append(np.zeros(100))
         all_embs.append(embs)
     all_embs= np.array(all_embs)
-    print ('relational outlier:',cp)
+    # print ('relational outlier:',cp)
     ############################################################### 
 
     
@@ -83,7 +83,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     ###############################################################   
     ptext_emb=load_data('gene','ptext_emb.pkl')
     tcp=load_data('gene','tcp.pkl')
-    print ('semantic outlier:',tcp)
+    # print ('semantic outlier:',tcp)
     tembs=[]
     for pid in pubs:
         tembs.append(ptext_emb[pid])
@@ -99,12 +99,12 @@ for n,name in enumerate(tqdm(name_pubs)):
     ##网络嵌入向量相似度
     sk_sim = np.zeros((len(pubs),len(pubs)))
     for k in range(rw_num):
-        sk_sim = sk_sim + pairwise_distances(all_embs[k],metric="cosine")
+        sk_sim = sk_sim + pairwise_distances(all_embs[k],metric="cosine",n_jobs=-1)
     sk_sim =sk_sim/rw_num 
 
     
     ##文本相似度
-    t_sim = pairwise_distances(tembs,metric="cosine")
+    t_sim = pairwise_distances(tembs,metric="cosine",n_jobs=-1)
     
     # 加权求整体相似度
     w=0.5
@@ -114,9 +114,9 @@ for n,name in enumerate(tqdm(name_pubs)):
     
     ##evaluate
     ###############################################################
-    pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed").fit_predict(sim)
+    pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
     # 返回每个文章的类标签
-    
+    print(sum(np.array(pre)==-1),len(pre))
     for i in range(len(pre)):
         if pre[i]==-1:
             outlier.add(i)
@@ -152,8 +152,8 @@ for n,name in enumerate(tqdm(name_pubs)):
     labels = np.array(labels)
     # 预测标签
     pre = np.array(pre)
-    print (labels,len(set(labels)))
-    print (pre,len(set(pre)))
+    # print (labels,len(set(labels)))
+    # print (pre,len(set(pre)))
     # 计算p r f1值
     pairwise_precision, pairwise_recall, pairwise_f1 = pairwise_evaluate(labels,pre)
     print (pairwise_precision, pairwise_recall, pairwise_f1)

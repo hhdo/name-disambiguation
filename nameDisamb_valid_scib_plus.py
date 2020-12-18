@@ -3,7 +3,7 @@ from gensim.models import word2vec
 from sklearn.cluster import DBSCAN
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
-from utils import *
+from utils_w2w import *
 from tqdm import tqdm
 pubs_raw = load_json("sna_data","sna_valid_pub.json")
 name_pubs1 = load_json("sna_data","sna_valid_example_evaluation_scratch.json")
@@ -75,6 +75,17 @@ for n,name in enumerate(tqdm(name_pubs1)):
         tembs.append(ptext_emb[pid][768*2:768*3])
     ############################################################### 
     
+    
+    ##SCI-BERT表征向量
+    ###############################################################   
+    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_text1_last4321.pkl')
+    
+    tembs_scibert=[]
+    for pid in pubs:
+        tembs_scibert.append(ptext_emb_scibert[pid][768*0:768*1])
+    ############################################################### 
+    
+    
     ##离散点
     outlier=set()
     for i in cp:
@@ -85,21 +96,27 @@ for n,name in enumerate(tqdm(name_pubs1)):
     ##网络嵌入向量相似度
     sk_sim = np.zeros((len(pubs),len(pubs)))
     for k in range(rw_num):
-        sk_sim = sk_sim + pairwise_distances(all_embs[k],metric="cosine")
-    sk_sim =sk_sim/rw_num    
+        sk_sim = sk_sim + pairwise_distances(all_embs[k],metric="cosine",n_jobs=-1)
+    sk_sim =sk_sim/rw_num 
+
     
     ##文本相似度
-    t_sim = pairwise_distances(tembs,metric="cosine")
+    t_sim = pairwise_distances(tembs,metric="cosine",n_jobs=-1)
+
+    #sci-bert相似度
+    bert_sim = pairwise_distances(tembs_scibert,metric="cosine",n_jobs=-1)
     
+    # 加权求整体相似度
     w=0.5
-    sim = (np.array(sk_sim) + w*np.array(t_sim))/(1+w)
+    
+    sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
     
     ##evaluate
     ###############################################################
-    pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed").fit_predict(sim)
-    
+    pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
+    print(sum(np.array(pre)==-1),len(pre))
     
     for i in range(len(pre)):
         if pre[i]==-1:
