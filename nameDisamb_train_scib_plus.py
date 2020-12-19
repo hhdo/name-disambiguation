@@ -98,7 +98,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     
     tembs_scibert=[]
     for pid in pubs:
-        tembs_scibert.append(ptext_emb_scibert[pid][768*0:768*1])
+        tembs_scibert.append(ptext_emb_scibert[pid][768*3:768*4])
     ############################################################### 
 
 

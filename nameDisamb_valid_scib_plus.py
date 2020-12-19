@@ -67,22 +67,22 @@ for n,name in enumerate(tqdm(name_pubs1)):
     
     ##论文文本表征向量
     ###############################################################   
-    ptext_emb=load_data('gene/scibert','paper_embeddings_text1_last4321.pkl')
+    ptext_emb=load_data('gene','ptext_emb.pkl')
     tcp=load_data('gene','tcp.pkl')
     # print ('semantic outlier:',tcp)
     tembs=[]
     for i,pid in enumerate(pubs):
-        tembs.append(ptext_emb[pid][768*2:768*3])
+        tembs.append(ptext_emb[pid])
     ############################################################### 
     
     
     ##SCI-BERT表征向量
     ###############################################################   
-    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_text1_last4321.pkl')
+    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_valid_last4321.pkl')
     
     tembs_scibert=[]
     for pid in pubs:
-        tembs_scibert.append(ptext_emb_scibert[pid][768*0:768*1])
+        tembs_scibert.append(ptext_emb_scibert[pid][768*2:768*3])
     ############################################################### 
     
     
@@ -109,7 +109,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     # 加权求整体相似度
     w=0.5
     
-    sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
+    sim = (1.4*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
     
