@@ -65,7 +65,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     for k in range(rw_num):
         mpg.generate_WMRW("gene/RW.txt",3,30) #生成路径集
         sentences = word2vec.Text8Corpus(r'gene/RW.txt')
-        model = word2vec.Word2Vec(sentences, size=100,negative =20, min_count=1, window=10)
+        model = word2vec.Word2Vec(sentences, size=100,negative =20, min_count=1, window=10, workers=50)
         embs=[]
         for i,pid in enumerate(pubs):
             if pid in model:
@@ -75,7 +75,7 @@ for n,name in enumerate(tqdm(name_pubs)):
                 embs.append(np.zeros(100))
         all_embs.append(embs)
     all_embs= np.array(all_embs)
-    # print ('relational outlier:',cp)
+    print ('relational outlier:',len(cp))
     ############################################################### 
 
     
@@ -84,7 +84,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     ###############################################################   
     ptext_emb=load_data('gene','ptext_emb.pkl')
     tcp=load_data('gene','tcp.pkl')
-    # print ('semantic outlier:',tcp)
+    print ('semantic outlier:',len(tcp))
     tembs=[]
     for pid in pubs:
         tembs.append(ptext_emb[pid])
@@ -98,7 +98,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     
     tembs_scibert=[]
     for pid in pubs:
-        tembs_scibert.append(ptext_emb_scibert[pid][768*3:768*4])
+        tembs_scibert.append(ptext_emb_scibert[pid][768*1:768*2])
     ############################################################### 
 
 
@@ -161,14 +161,14 @@ for n,name in enumerate(tqdm(name_pubs)):
             pre[i]=K
             K=K+1
 
-    ## find nodes in outlier is the same label or not
-    for ii,i in enumerate(outlier):
-        for jj,j in enumerate(outlier):
-            if jj<=ii:
-                continue
-            else:
-                if paper_pair1[i][j]>=1.5:
-                    pre[j]=pre[i]
+    # ## find nodes in outlier is the same label or not
+    # for ii,i in enumerate(outlier):
+    #     for jj,j in enumerate(outlier):
+    #         if jj<=ii:
+    #             continue
+    #         else:
+    #             if paper_pair1[i][j]>=1.5:
+    #                 pre[j]=pre[i]
             
 
 

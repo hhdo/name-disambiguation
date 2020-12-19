@@ -50,7 +50,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     for k in range(rw_num):
         mpg.generate_WMRW("gene/RW.txt",3,30) #生成路径集
         sentences = word2vec.Text8Corpus(r'gene/RW.txt')
-        model = word2vec.Word2Vec(sentences, size=100,negative =20, min_count=1, window=10)
+        model = word2vec.Word2Vec(sentences, size=100,negative =20, min_count=1, window=10, workers=50)
         embs=[]
         for i,pid in enumerate(pubs):
             if pid in model:
@@ -82,7 +82,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     
     tembs_scibert=[]
     for pid in pubs:
-        tembs_scibert.append(ptext_emb_scibert[pid][768*2:768*3])
+        tembs_scibert.append(ptext_emb_scibert[pid][768*1:768*2])
     ############################################################### 
     
     
@@ -139,14 +139,14 @@ for n,name in enumerate(tqdm(name_pubs1)):
             pre[i]=K
             K=K+1
     
-    ## find nodes in outlier is the same label or not
-    for ii,i in enumerate(outlier):
-        for jj,j in enumerate(outlier):
-            if jj<=ii:
-                continue
-            else:
-                if paper_pair1[i][j]>=1.5:
-                    pre[j]=pre[i]
+    # ## find nodes in outlier is the same label or not
+    # for ii,i in enumerate(outlier):
+    #     for jj,j in enumerate(outlier):
+    #         if jj<=ii:
+    #             continue
+    #         else:
+    #             if paper_pair1[i][j]>=1.5:
+    #                 pre[j]=pre[i]
             
     
 

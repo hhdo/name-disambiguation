@@ -154,5 +154,5 @@ f1.close()
 from gensim.models import word2vec
 
 sentences = word2vec.Text8Corpus(r'gene/all_text.txt')
-model = word2vec.Word2Vec(sentences, size=100,negative =3, min_count=2, window=3, workers=100)
+model = word2vec.Word2Vec(sentences, size=200,negative =10, min_count=2, window=4, sg=1, hs=1, workers=50)
 model.save('word2vec/Aword2vec.model')
