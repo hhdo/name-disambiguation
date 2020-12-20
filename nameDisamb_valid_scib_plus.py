@@ -3,7 +3,7 @@ from gensim.models import word2vec
 from sklearn.cluster import DBSCAN
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
-from utils_w2w import *
+from utils import *
 from tqdm import tqdm
 pubs_raw = load_json("sna_data","sna_valid_pub.json")
 name_pubs1 = load_json("sna_data","sna_valid_example_evaluation_scratch.json")
@@ -50,7 +50,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     for k in range(rw_num):
         mpg.generate_WMRW("gene/RW.txt",3,30) #生成路径集
         sentences = word2vec.Text8Corpus(r'gene/RW.txt')
-        model = word2vec.Word2Vec(sentences, size=200,negative =20, min_count=1, window=10, workers=50)
+        model = word2vec.Word2Vec(sentences, size=200,negative =10, min_count=1, window=10, iter=10,workers=50)
         embs=[]
         for i,pid in enumerate(pubs):
             if pid in model:
@@ -109,7 +109,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     # 加权求整体相似度
     w=0.5
     
-    sim = (1.4*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
+    sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
     
