@@ -50,14 +50,14 @@ for n,name in enumerate(tqdm(name_pubs1)):
     for k in range(rw_num):
         mpg.generate_WMRW("gene/RW.txt",3,30) #生成路径集
         sentences = word2vec.Text8Corpus(r'gene/RW.txt')
-        model = word2vec.Word2Vec(sentences, size=100,negative =20, min_count=1, window=10, workers=50)
+        model = word2vec.Word2Vec(sentences, size=200,negative =20, min_count=1, window=10, workers=50)
         embs=[]
         for i,pid in enumerate(pubs):
             if pid in model:
                 embs.append(model[pid])
             else:
                 cp.add(i)
-                embs.append(np.zeros(100))
+                embs.append(np.zeros(200))
         all_embs.append(embs)
     all_embs= np.array(all_embs)
     # print ('relational outlier:',cp)
