@@ -202,7 +202,7 @@ def generate_pair(pubs,outlier): ##求匹配相似度
             p, a = toks[0], toks[1]
             if p not in paper_conf:
                 paper_conf[p]=[]
-            paper_conf[p]=a
+            paper_conf[p].append(a)
     temp.clear()
     
     with open(dirpath + "/paper_author.txt", encoding='utf-8') as pafile:
@@ -242,6 +242,14 @@ def generate_pair(pubs,outlier): ##求匹配相似度
             co=0
             ct=0
           
+            # if pid in paper_author and pjd in paper_author:
+            #     ca = len(set(paper_author[pid])&set(paper_author[pjd]))*1.5
+            # if pid in paper_conf and pjd in paper_conf and 'null' not in paper_conf[pid]:
+            #     cv = tanimoto(set(paper_conf[pid]),set(paper_conf[pjd]))
+            # if pid in paper_org and pjd in paper_org:
+            #     co = tanimoto(set(paper_org[pid]),set(paper_org[pjd]))
+            # if pid in paper_word and pjd in paper_word:
+            #     ct = len(set(paper_word[pid])&set(paper_word[pjd]))/3
             if pid in paper_author and pjd in paper_author:
                 ca = len(set(paper_author[pid])&set(paper_author[pjd]))*1.5
             if pid in paper_conf and pjd in paper_conf and 'null' not in paper_conf[pid]:
