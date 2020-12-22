@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
 from utils import *
 from tqdm import tqdm
+from collections import Counter 
 pubs_raw = load_json("train","train_pub.json")
 name_pubs = load_json("train","train_author.json")
 
@@ -75,7 +76,7 @@ for n,name in enumerate(tqdm(name_pubs)):
                 embs.append(np.zeros(100))
         all_embs.append(embs)
     all_embs= np.array(all_embs)
-    print ('relational outlier:',len(cp))
+    print ('relational outlier:',len(cp),end = ", ")
     ############################################################### 
 
     
@@ -135,12 +136,12 @@ for n,name in enumerate(tqdm(name_pubs)):
     
     ##evaluate
     ###############################################################
-    pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
+    pre = DBSCAN(eps = 0.2, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
     # 返回每个文章的类标签
     for i in range(len(pre)):
         if pre[i]==-1:
             outlier.add(i)
-    print(sum(np.array(pre)==-1),len(pre))
+    print('befer outlier assign:',len(outlier),'/',len(pre),end = ", ")
     
     ## assign each outlier a label
     paper_pair = generate_pair(pubs,outlier)
@@ -169,8 +170,8 @@ for n,name in enumerate(tqdm(name_pubs)):
     #         else:
     #             if paper_pair1[i][j]>=1.5:
     #                 pre[j]=pre[i]
-            
-
+           
+    print('after outlier assign:',sum(np.array(list(Counter(pre).values()))==1),'/',len(pre))
 
     # 真实标签
     labels = np.array(labels)

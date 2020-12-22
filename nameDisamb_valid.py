@@ -60,7 +60,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
                 embs.append(np.zeros(100))
         all_embs.append(embs)
     all_embs= np.array(all_embs)
-    # print ('relational outlier:',cp)
+    print ('relational outlier:',len(cp),end = ", ")
     ############################################################### 
 
     
@@ -69,7 +69,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     ###############################################################   
     ptext_emb=load_data('gene','ptext_emb.pkl')
     tcp=load_data('gene','tcp.pkl')
-    # print ('semantic outlier:',tcp)
+    print ('semantic outlier:',len(tcp))
     tembs=[]
     for i,pid in enumerate(pubs):
         tembs.append(ptext_emb[pid])
@@ -119,7 +119,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     for i in range(len(pre)):
         if pre[i]==-1:
             outlier.add(i)
-    print(sum(np.array(pre)==-1),len(pre))
+    print('befer outlier assign:',len(outlier),'/',len(pre),end = ", ")
     
     ## assign each outlier a label
     paper_pair = generate_pair(pubs,outlier)
@@ -147,7 +147,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     #             if paper_pair1[i][j]>=1.5:
     #                 pre[j]=pre[i]
             
-    
+    print('after outlier assign:',sum(np.array(list(Counter(pre).values()))==1),'/',len(pre))
 
     # print (pre,len(set(pre)))
     
