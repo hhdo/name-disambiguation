@@ -137,10 +137,10 @@ for n,name in enumerate(tqdm(name_pubs)):
     ###############################################################
     pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
     # 返回每个文章的类标签
-    print(sum(np.array(pre)==-1),len(pre))
     for i in range(len(pre)):
         if pre[i]==-1:
             outlier.add(i)
+    print(sum(np.array(pre)==-1),len(pre))
     
     ## assign each outlier a label
     paper_pair = generate_pair(pubs,outlier)

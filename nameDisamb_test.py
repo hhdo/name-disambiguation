@@ -10,13 +10,13 @@ name_pubs1 = load_json("sna_test_data","example_evaluation_scratch.json")
 
 result={}
 
-for n,name in enumerate(name_pubs1):
+for n,name in enumerate(tqdm(name_pubs1)):
     pubs=[]
     for cluster in name_pubs1[name]:
         pubs.extend(cluster)
     
     
-    print (n,name,len(pubs))
+    # print (n,name,len(pubs))
     if len(pubs)==0:
         result[name]=[]
         continue
@@ -48,9 +48,9 @@ for n,name in enumerate(name_pubs1):
     rw_num = 10
     cp=set()
     for k in range(rw_num):
-        mpg.generate_WMRW("gene/RW.txt",5,20)
+        mpg.generate_WMRW("gene/RW.txt",5,20) #生成路径集
         sentences = word2vec.Text8Corpus(r'gene/RW.txt')
-        model = word2vec.Word2Vec(sentences, size=100,negative =25, min_count=1, window=10)
+        model = word2vec.Word2Vec(sentences, size=100,negative =25, min_count=1, window=10, workers=50)
         embs=[]
         for i,pid in enumerate(pubs):
             if pid in model:
@@ -60,7 +60,7 @@ for n,name in enumerate(name_pubs1):
                 embs.append(np.zeros(100))
         all_embs.append(embs)
     all_embs= np.array(all_embs)
-    print ('relational outlier:',cp)    
+    # print ('relational outlier:',cp)    
     ############################################################### 
  
 
@@ -69,48 +69,61 @@ for n,name in enumerate(name_pubs1):
     ###############################################################  
     ptext_emb=load_data('gene','ptext_emb.pkl')
     tcp=load_data('gene','tcp.pkl')
-    print ('semantic outlier:',tcp)
+    # print ('semantic outlier:',tcp)
     tembs=[]
     for i,pid in enumerate(pubs):
         tembs.append(ptext_emb[pid])
     ###############################################################
     
     
+    ##SCI-BERT表征向量
+    ###############################################################   
+    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_valid_last4321.pkl')
     
-    ##论文相似性矩阵
-    ###############################################################
+    tembs_scibert=[]
+    for pid in pubs:
+        tembs_scibert.append(ptext_emb_scibert[pid][768*1:768*2])
+    ############################################################### 
+    
+    
+    ##离散点
+    outlier=set()
+    for i in cp:
+        outlier.add(i)
+    for i in tcp:
+        outlier.add(i)
+    
+    ##网络嵌入向量相似度
     sk_sim = np.zeros((len(pubs),len(pubs)))
     for k in range(rw_num):
-        sk_sim = sk_sim + pairwise_distances(all_embs[k],metric="cosine")
+        sk_sim = sk_sim + pairwise_distances(all_embs[k],metric="cosine",n_jobs=-1)
     sk_sim =sk_sim/rw_num    
     
 
-    tembs = pairwise_distances(tembs,metric="cosine")
-   
+    ##文本相似度
+    t_sim = pairwise_distances(tembs,metric="cosine",n_jobs=-1)
+    
+    
+    
+    
+    # 加权求整体相似度
     w=1
-    sim = (np.array(sk_sim) + w*np.array(tembs))/(1+w)
-    ############################################################### 
+    sim = (np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w)
+
+    
     
     
   
     ##evaluate
     ###############################################################
-    pre = DBSCAN(eps = 0.2, min_samples = 4,metric ="precomputed").fit_predict(sim)
-    pre= np.array(pre)
+    pre = DBSCAN(eps = 0.2, min_samples = 4,metric ="precomputed",n_jobs=-1).fit_predict(sim)    
     
-    
-    ##离群论文集
-    outlier=set()
     for i in range(len(pre)):
         if pre[i]==-1:
             outlier.add(i)
-    for i in cp:
-        outlier.add(i)
-    for i in tcp:
-        outlier.add(i)
-            
+    print(sum(np.array(pre)==-1),len(pre))            
         
-    ##基于阈值的相似性匹配
+    ## assign each outlier a label
     paper_pair = generate_pair(pubs,outlier)
     paper_pair1 = paper_pair.copy()
     K = len(set(pre))
@@ -127,17 +140,18 @@ for n,name in enumerate(name_pubs1):
             pre[i]=K
             K=K+1
     
-    for ii,i in enumerate(outlier):
-        for jj,j in enumerate(outlier):
-            if jj<=ii:
-                continue
-            else:
-                if paper_pair1[i][j]>=1.5:
-                    pre[j]=pre[i]
+    # ## find nodes in outlier is the same label or not
+    # for ii,i in enumerate(outlier):
+    #     for jj,j in enumerate(outlier):
+    #         if jj<=ii:
+    #             continue
+    #         else:
+    #             if paper_pair1[i][j]>=1.5:
+    #                 pre[j]=pre[i]
             
     
 
-    print (pre,len(set(pre)))
+    # print (pre,len(set(pre)))
     
     result[name]=[]
     for i in set(pre):

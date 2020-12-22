@@ -108,19 +108,18 @@ for n,name in enumerate(tqdm(name_pubs1)):
     
     # 加权求整体相似度
     w=0.5
-    
-    sim = (1.4*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
+    sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
     
     ##evaluate
     ###############################################################
     pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
-    print(sum(np.array(pre)==-1),len(pre))
     
     for i in range(len(pre)):
         if pre[i]==-1:
             outlier.add(i)
+    print(sum(np.array(pre)==-1),len(pre))
     
     ## assign each outlier a label
     paper_pair = generate_pair(pubs,outlier)
