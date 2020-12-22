@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
 from utils import *
 from tqdm import tqdm
+from collections import Counter 
 pubs_raw = load_json("sna_data","sna_valid_pub.json")
 name_pubs1 = load_json("sna_data","sna_valid_example_evaluation_scratch.json")
 

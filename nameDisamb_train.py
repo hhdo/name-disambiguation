@@ -136,7 +136,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     
     ##evaluate
     ###############################################################
-    pre = DBSCAN(eps = 0.2, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
+    pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
     # 返回每个文章的类标签
     for i in range(len(pre)):
         if pre[i]==-1:
