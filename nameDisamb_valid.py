@@ -109,7 +109,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     
     # 加权求整体相似度
     w=0.5
-    sim = (1.4*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
+    sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
     
