@@ -1,8 +1,5 @@
 # 基于网络嵌入和语义表征的作者名消歧
 
-贡献者：@joe817
-
-
 ## 摘要
 在许多领域中，同名消歧一直被视为一个很有意义但具有挑战性的问题，如文献管理，社交网络分析等。对论文同名作者的消歧是指利用论文的信息，如标题，作者，作者机构，摘要，关键词等，通过一些方法将论文分配到正确的作者档案中。目前已经有很多研究者针对同名作者消歧问题提出了解决方法，这些方法主要包括利用论文信息进行基于规则的匹配，或者利用表示学习方法，对论文信息进行表征学习，然后利用聚类方法，如层次聚类，DBSCAN等对这些表征向量进行聚类，使得相似的论文聚成一簇，不相似的论文被分到不同的簇中。本文提出了一种高效的作者名消歧方法，使用基于元路径随机游走的异质网络嵌入方法和基于word2vec的语义表征学习方法学习论文的表征向量，并使用基于DBSCAN与规则匹配结合的聚类方法将论文划分给不同的作者。
 
@@ -170,3 +167,5 @@ stopword1 = ['university','univ','china','department','dept','laboratory','lab',
 ## 参考文献
 [1] Perozzi, Bryan, Rami Al-Rfou, and Steven Skiena. "Deepwalk: Online learning of social representations." Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining. ACM, 2014.  
 [2] Dong, Yuxiao, Nitesh V. Chawla, and Ananthram Swami. "metapath2vec: Scalable representation learning for heterogeneous networks." Proceedings of the 23rd ACM SIGKDD international conference on knowledge discovery and data mining. ACM, 2017.
+## 参考代码：
+@joe817

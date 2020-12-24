@@ -256,10 +256,10 @@ def generate_pair(pubs,outlier): ##求匹配相似度
                 ca = len(set(paper_author[pid])&set(paper_author[pjd]))*1.5
             # venue相似度
             if pid in paper_conf and pjd in paper_conf and 'null' not in paper_conf[pid]:
-                cv = len(set(paper_conf[pid])&set(paper_conf[pjd]))*0.3
+                cv = len(set(paper_conf[pid])&set(paper_conf[pjd]))*0.2
             # 机构相似度
             if pid in paper_org and pjd in paper_org:
-                co = len(set(paper_org[pid])&set(paper_org[pjd]))*0.7
+                co = len(set(paper_org[pid])&set(paper_org[pjd]))*0.5
             # 题目关键词相似度
             if pid in paper_word and pjd in paper_word:
                 ct = len(set(paper_word[pid])&set(paper_word[pjd]))*0.3
