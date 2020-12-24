@@ -72,7 +72,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     tcp=load_data('gene','tcp.pkl')
     print ('semantic outlier:',len(tcp))
     tembs=[]
-    for i,pid in enumerate(pubs):
+    for pid in pubs:
         tembs.append(ptext_emb[pid])
     ############################################################### 
     
@@ -109,6 +109,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     
     # 加权求整体相似度
     w=0.5
+
     sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
@@ -116,7 +117,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     ##evaluate
     ###############################################################
     pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
-    
+    # 返回每个文章的类标签
     for i in range(len(pre)):
         if pre[i]==-1:
             outlier.add(i)

@@ -61,7 +61,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     ##论文关系表征向量
     ############################################################### 
     all_embs=[]
-    rw_num =10
+    rw_num = 10
     cp=set()
     for k in range(rw_num):
         mpg.generate_WMRW("gene/RW.txt",3,30) #生成路径集
