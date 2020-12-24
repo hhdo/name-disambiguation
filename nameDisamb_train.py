@@ -129,9 +129,6 @@ for n,name in enumerate(tqdm(name_pubs)):
     
     sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
-    # sim = (1*np.array(sk_sim) + w*np.array(t_sim) )/(1+w)
-
-
     
     
     ##evaluate
