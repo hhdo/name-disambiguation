@@ -109,7 +109,7 @@ for n,name in enumerate(tqdm(name_pubs1)):
     
     # 加权求整体相似度
     w=0.5
-    sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
+    sim = (1.4*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
     
@@ -130,9 +130,11 @@ for n,name in enumerate(tqdm(name_pubs1)):
         if i not in outlier:
             continue
         j = np.argmax(paper_pair[i])
+        
         while j in outlier:
             paper_pair[i][j]=-1
             j = np.argmax(paper_pair[i])
+
         if paper_pair[i][j]>=1.5:
             pre[i]=pre[j]
         else:
