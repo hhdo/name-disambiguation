@@ -315,7 +315,9 @@ def save_relation(name_pubs_raw, name): # 保存论文的各种feature
                  'institute','inst','college','beijing']
                     #'university','univ','china','department','dept','institute','inst','laboratory','lab','technology',
                     #'al','et','science','sciences','school','chinese','college']
-    
+    # org_stopword = ['at','based','in','of','for','on','and','to','using','with','the','by','we','be','is','are','can','al','et']
+
+
     f1 = open ('gene/paper_author.txt','w',encoding = 'utf-8')
     f2 = open ('gene/paper_conf.txt','w',encoding = 'utf-8')
     f3 = open ('gene/paper_word.txt','w',encoding = 'utf-8')
