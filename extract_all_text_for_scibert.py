@@ -5,6 +5,7 @@ import re
 
 # pubs_raw = load_json("train","train_pub.json")
 pubs_raw = load_json("sna_data","sna_valid_pub.json")
+# pubs_raw = load_json("sna_data","sna_valid_pub.json")
 
 r = '[!“”"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~—～’]+'
 
