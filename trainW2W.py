@@ -16,6 +16,7 @@ from tqdm import tqdm
 
 pubs_raw = load_json("all_train_text","all_train_pub.json")
 pubs_raw1 = load_json("all_train_text","all_valid_pub.json")
+pubs_raw2 = load_json("all_train_text","all_test_pub.json")
 
 r = '[!“”"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~—～’]+'
 
@@ -111,8 +112,9 @@ for i,pid in enumerate(tqdm(pubs_raw1)):
     pstr = re.sub(r'\s{2,}', ' ', pstr).strip()
     f1.write(pstr+'\n')
 
-'''
-for i,pid in enumerate(pubs_raw2):
+
+print('reading test pub text:')
+for i,pid in enumerate(tqdm(pubs_raw2)):
     pub = pubs_raw2[pid]
     
     for author in pub["authors"]:
@@ -126,6 +128,16 @@ for i,pid in enumerate(pubs_raw2):
             
     title = pub["title"]
     pstr=title.strip()
+    pstr = pstr.lower()
+    pstr = re.sub(r,' ', pstr)
+    pstr = re.sub(r'\s{2,}', ' ', pstr).strip()
+    f1.write(pstr+'\n')
+    
+    keyword=""
+    if "keywords" in pub:
+        for word in pub["keywords"]:
+            keyword=keyword+word+" "
+    pstr=keyword.strip()
     pstr = pstr.lower()
     pstr = re.sub(r,' ', pstr)
     pstr = re.sub(r'\s{2,}', ' ', pstr).strip()
@@ -145,7 +157,7 @@ for i,pid in enumerate(pubs_raw2):
     pstr = re.sub(r,' ', pstr)
     pstr = re.sub(r'\s{2,}', ' ', pstr).strip()
     f1.write(pstr+'\n')
-'''        
+      
         
 f1.close()
 
@@ -154,5 +166,5 @@ f1.close()
 from gensim.models import word2vec
 print('word2vec training...')
 sentences = word2vec.Text8Corpus(r'gene/all_text.txt')
-model = word2vec.Word2Vec(sentences, size=200,negative =10, min_count=2, window=4, iter=5,sg=1, hs=1, workers=50)
+model = word2vec.Word2Vec(sentences, size=200,negative =10, min_count=2, window=8, iter=10,sg=1, hs=1, workers=50)
 model.save('word2vec/Aword2vec.model')
