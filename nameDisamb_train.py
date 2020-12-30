@@ -95,7 +95,7 @@ for n,name in enumerate(tqdm(name_pubs)):
 
     ##SCI-BERT表征向量
     ###############################################################   
-    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_text1_last4321.pkl')
+    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_train_last4321.pkl')
     
     tembs_scibert=[]
     for pid in pubs:
