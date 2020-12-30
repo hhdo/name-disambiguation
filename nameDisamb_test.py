@@ -6,8 +6,8 @@ from sklearn.metrics.pairwise import pairwise_distances
 from utils import *
 from tqdm import tqdm
 from collections import Counter 
-pubs_raw = load_json("sna_data","test_pub_sna.json")
-name_pubs1 = load_json("sna_data","example_evaluation_scratch.json")
+pubs_raw = load_json("sna_data","sna_test_pub.json")
+name_pubs1 = load_json("sna_data","sna_test_example_evaluation_scratch.json")
 
 result={}
 
