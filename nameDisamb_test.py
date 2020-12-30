@@ -6,8 +6,8 @@ from sklearn.metrics.pairwise import pairwise_distances
 from utils import *
 from tqdm import tqdm
 from collections import Counter 
-pubs_raw = load_json("sna_test_data","test_pub_sna.json")
-name_pubs1 = load_json("sna_test_data","example_evaluation_scratch.json")
+pubs_raw = load_json("sna_data","test_pub_sna.json")
+name_pubs1 = load_json("sna_data","example_evaluation_scratch.json")
 
 result={}
 
@@ -49,9 +49,9 @@ for n,name in enumerate(tqdm(name_pubs1)):
     rw_num = 10
     cp=set()
     for k in range(rw_num):
-        mpg.generate_WMRW("gene/RW.txt",5,20) #生成路径集
+        mpg.generate_WMRW("gene/RW.txt",3,30) #生成路径集
         sentences = word2vec.Text8Corpus(r'gene/RW.txt')
-        model = word2vec.Word2Vec(sentences, size=100,negative =25, min_count=1, window=10, workers=50)
+        model = word2vec.Word2Vec(sentences, size=100,negative =20, min_count=1, window=10, workers=50)
         embs=[]
         for i,pid in enumerate(pubs):
             if pid in model:
@@ -72,14 +72,14 @@ for n,name in enumerate(tqdm(name_pubs1)):
     tcp=load_data('gene','tcp.pkl')
     print ('semantic outlier:',len(tcp))
     tembs=[]
-    for i,pid in enumerate(pubs):
+    for pid in pubs:
         tembs.append(ptext_emb[pid])
     ###############################################################
     
     
     ##SCI-BERT表征向量
     ###############################################################   
-    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_valid_last4321.pkl')
+    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_test_last4321.pkl')
     
     tembs_scibert=[]
     for pid in pubs:
@@ -104,21 +104,20 @@ for n,name in enumerate(tqdm(name_pubs1)):
     ##文本相似度
     t_sim = pairwise_distances(tembs,metric="cosine",n_jobs=-1)
     
-    
-    
+    #sci-bert相似度
+    bert_sim = pairwise_distances(tembs_scibert,metric="cosine",n_jobs=-1)
     
     # 加权求整体相似度
-    w=1
-    sim = (np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w)
+    w=0.5
 
-    
+    sim = (1.3*np.array(sk_sim) + 1.1*w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
   
     ##evaluate
     ###############################################################
-    pre = DBSCAN(eps = 0.2, min_samples = 4,metric ="precomputed",n_jobs=-1).fit_predict(sim)    
-    
+    pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)    
+    # 返回每个文章的类标签
     for i in range(len(pre)):
         if pre[i]==-1:
             outlier.add(i)
@@ -132,9 +131,11 @@ for n,name in enumerate(tqdm(name_pubs1)):
         if i not in outlier:
             continue
         j = np.argmax(paper_pair[i])
+
         while j in outlier:
             paper_pair[i][j]=-1
             j = np.argmax(paper_pair[i])
+
         if paper_pair[i][j]>=1.5:
             pre[i]=pre[j]
         else:
