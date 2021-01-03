@@ -164,8 +164,31 @@ stopword1 = ['university','univ','china','department','dept','laboratory','lab',
 
 我们利用构建作者词典的方法，避免了某些作者姓和名顺序不一致的歧义，即将Ziyue Qiao和Qiao ZIyue的歧义消除，将他们看作是同一个人。具体操作是对于每个名字，检查它和它前后调换后的名字是否在作者名词典中，如果某一个在，则把该名字保存成该形式，若都不在，将它加入作者词典。这样作者词典里不会同时存在Ziyue Qiao和Qiao ZIyue这两个名字。详细见代码utils部分中的save_relation函数。
 
+
+
+
+## 运行说明：
+```
+1. activate conda env
+    conda activate *
+
+2. extract text for scibert embedding
+    python extract_all_text_for_scibert.py
+
+3. get scibert embedding
+    *** You need save embedding pkl to 'gene/scibert/'
+
+4. train word2vec
+    python merge_train_text && python trainW2W.py
+
+5. run train/valid/test data
+    python nameDisamb_train/valid/test.py
+
+6. get a result
+    When you run on valid or test data, you will get a result in 'genetest/'
+```
+部分代码参考@joe817
+
 ## 参考文献
 [1] Perozzi, Bryan, Rami Al-Rfou, and Steven Skiena. "Deepwalk: Online learning of social representations." Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining. ACM, 2014.  
 [2] Dong, Yuxiao, Nitesh V. Chawla, and Ananthram Swami. "metapath2vec: Scalable representation learning for heterogeneous networks." Proceedings of the 23rd ACM SIGKDD international conference on knowledge discovery and data mining. ACM, 2017.
-## 参考代码：
-@joe817
