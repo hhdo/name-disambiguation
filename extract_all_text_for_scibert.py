@@ -3,14 +3,14 @@ from utils import *
 from tqdm import tqdm
 import re
 
-# pubs_raw = load_json("train","train_pub.json")
-# pubs_raw = load_json("sna_data","sna_valid_pub.json")
-pubs_raw = load_json("sna_data","sna_test_pub.json")
+pubs_raw_train = load_json("train","train_pub.json")
+pubs_raw_valid = load_json("sna_data","sna_valid_pub.json")
+pubs_raw_test = load_json("sna_data","sna_test_pub.json")
 
 r = '[!“”"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~—～’]+'
 
-def version1():
-    text_path = 'scibert_pre_data/all_paper_test1.txt'
+def version1(pubs_raw,filename):
+    text_path = 'scibert_pre_data/'+filename
     
     f = open (text_path,'w',encoding = 'utf-8')
     for pid in tqdm(pubs_raw):
@@ -35,8 +35,8 @@ def version1():
 
     f.close()
 
-def version2():
-    text_path = 'scibert_pre_data/all_paper_test2.txt'
+def version2(pubs_raw,filename):
+    text_path = 'scibert_pre_data/'+filename
     
     f = open (text_path,'w',encoding = 'utf-8')
     for pid in tqdm(pubs_raw):
@@ -62,6 +62,12 @@ def version2():
     f.close() 
 
 
-version1()
-# version2()
+version1(pubs_raw_train,'all_paper_train1.txt')
+version1(pubs_raw_valid,'all_paper_valid1.txt')
+version1(pubs_raw_test,'all_paper_test1.txt')
+
+# version2(pubs_raw_train,'all_paper_train2.txt')
+# version2(pubs_raw_valid,'all_paper_valid2.txt')
+# version2(pubs_raw_test,'all_paper_test2.txt')
+
 
