@@ -61,7 +61,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     ##论文关系表征向量
     ############################################################### 
     all_embs=[]
-    rw_num =10
+    rw_num = 10
     cp=set()
     for k in range(rw_num):
         mpg.generate_WMRW("gene/RW.txt",3,30) #生成路径集
@@ -95,7 +95,7 @@ for n,name in enumerate(tqdm(name_pubs)):
 
     ##SCI-BERT表征向量
     ###############################################################   
-    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_text1_last4321.pkl')
+    ptext_emb_scibert=load_data('gene/scibert','paper_embeddings_train_last4321.pkl')
     
     tembs_scibert=[]
     for pid in pubs:
@@ -127,13 +127,10 @@ for n,name in enumerate(tqdm(name_pubs)):
     # 加权求整体相似度
     w=0.5
     
-    sim = (1.3*np.array(sk_sim) + w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
+    sim = (1.3*np.array(sk_sim) + 1.1*w*np.array(t_sim) + w*np.array(bert_sim))/(1+w+w)
     
     
 
-
-    
-    
     ##evaluate
     ###############################################################
     pre = DBSCAN(eps = 0.15, min_samples = 3,metric ="precomputed",n_jobs=-1).fit_predict(sim)
@@ -146,7 +143,6 @@ for n,name in enumerate(tqdm(name_pubs)):
     ## assign each outlier a label
     paper_pair = generate_pair(pubs,outlier)
     paper_pair1 = paper_pair.copy()
-
     K = len(set(pre))
 
     # 建立一个聚类跟随字典
