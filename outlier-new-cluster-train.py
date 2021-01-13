@@ -142,7 +142,7 @@ for n,name in enumerate(tqdm(name_pubs)):
     
     ## assign each outlier a label
     paper_pair = generate_pair(pubs,outlier)
-    paper_pair1 = paper_pair.copy()
+    
     K = len(set(pre))
 
     # 建立一个聚类跟随字典
@@ -187,6 +187,7 @@ for n,name in enumerate(tqdm(name_pubs)):
         else:
             # 此时p_ind的最佳匹配一定是K簇外的点，证明略。
             # 因此要找到一个K簇内的点抱大腿
+            paper_pair1 = paper_pair.copy()
             # 1. p_ind 的次要匹配
             t_leg = np.argmax(paper_pair[p_ind])
             while pre[t_leg]==-1:
@@ -195,13 +196,13 @@ for n,name in enumerate(tqdm(name_pubs)):
             leg1, leg1_w = t_leg, paper_pair[p_ind][t_leg]
             # 2. p_ind 最佳匹配的次要匹配
             # t_leg为p_ind的最佳匹配
-            t_leg = np.argmax(paper_pair[p_ind])
+            t_leg = np.argmax(paper_pair1[p_ind])
             # t_leg_sec为p_ind最佳匹配的次要匹配
-            t_leg_sec= np.argmax(paper_pair[t_leg])
+            t_leg_sec= np.argmax(paper_pair1[t_leg])
             while pre[t_leg_sec]==-1:
-                paper_pair[t_leg][t_leg_sec]=-1
-                t_leg_sec= np.argmax(paper_pair[t_leg])
-            leg2, leg2_w = t_leg_sec, paper_pair[t_leg][t_leg_sec]
+                paper_pair1[t_leg][t_leg_sec]=-1
+                t_leg_sec= np.argmax(paper_pair1[t_leg])
+            leg2, leg2_w = t_leg_sec, paper_pair1[t_leg][t_leg_sec]
 
             # 比较leg1和leg2的权重，取权重最大的那个和阈值比较
             if leg1_w > leg2_w:
@@ -214,7 +215,7 @@ for n,name in enumerate(tqdm(name_pubs)):
                     pre[i] = pre[leg]
             else:
                 for i in simDict[p_ind]:
-                    pre[i] = pre[K]
+                    pre[i] = K
                 K += 1
 
     # ## find nodes in outlier is the same label or not
