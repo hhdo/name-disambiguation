@@ -1,0 +1,8 @@
+certifi==2016.2.28
+gensim==3.8.3
+joblib==1.0.0
+numpy==1.19.4
+scipy==1.5.4
+six==1.15.0
+smart-open==4.1.0
+threadpoolctl==2.1.0
